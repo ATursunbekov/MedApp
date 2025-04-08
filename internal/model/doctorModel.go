@@ -23,3 +23,9 @@ type DoctorInput struct {
 	Email    string `json:email bson:"email"`
 	Password string `json:password bson:"password"`
 }
+
+// For getting doctor's free slots
+type DoctorSchedule struct {
+	ID   string `json:"id" bson:"id"`
+	Date string `json:"date" bson:"date"` //date format: (00-00-00)
+}

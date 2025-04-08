@@ -14,12 +14,31 @@ type Authorization interface {
 	CreateDoctorEmailIndex() error
 }
 
+type Profile interface {
+	FindClientByID(id string) (*model.Client, error)
+	FindDoctorByID(id string) (*model.Doctor, error)
+}
+
+type Doctor interface {
+	GetAllDoctors() ([]model.Doctor, error)
+}
+
+type Booking interface {
+	BookClientToDoctor(session model.BookingModel) error
+}
+
 type Repository struct {
 	Authorization
+	Profile
+	Doctor
+	Booking
 }
 
 func NewRepository(db *mongo.Database) *Repository {
 	return &Repository{
 		Authorization: NewAuthRepository(db),
+		Profile:       NewProfileRepository(db),
+		Doctor:        NewDoctorRepository(db),
+		Booking:       NewBookingRepository(db),
 	}
 }
