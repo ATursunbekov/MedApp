@@ -42,6 +42,21 @@ func (h *Handler) InitRouter() *gin.Engine {
 	content := router.Group("/content", h.JWTMiddleware)
 	{
 		content.GET("/check", h.login)
+
+		client := content.Group("/client")
+		{
+			client.GET("/profile", h.getClientProfile)
+			client.POST("/book", h.bookTimeSlot)
+		}
+
+		doctor := content.Group("/doctor")
+		{
+			doctor.GET("profile", h.getDoctorProfile)
+		}
+
+		//TODO: General apis
+		content.GET("/getDoctors", h.getAllDoctors)
+		content.GET("/getSchedule", h.getFreeTimeSlots)
 	}
 
 	return router

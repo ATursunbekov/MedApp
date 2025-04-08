@@ -86,7 +86,7 @@ func (a *AuthRepository) LoginDoctor(input model.DoctorInput) (model.Doctor, err
 
 	var doctor model.Doctor
 
-	err := a.clientDB.FindOne(ctx, bson.M{"email": input.Email}).Decode(&doctor)
+	err := a.doctorDB.FindOne(ctx, bson.M{"email": input.Email}).Decode(&doctor)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return doctor, fmt.Errorf("client does not exist")

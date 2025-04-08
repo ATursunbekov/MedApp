@@ -75,7 +75,7 @@ func (a *AuthService) LoginDoctor(input model.DoctorInput) (string, error) {
 		return "", errors.New("password does not match")
 	}
 
-	accessToken, err := GenerateToken(doctor.ID.Hex(), true)
+	accessToken, err := GenerateToken(doctor.ID.Hex(), false)
 	if err != nil {
 		return "", err
 	}
