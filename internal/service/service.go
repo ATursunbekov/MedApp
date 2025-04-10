@@ -3,6 +3,7 @@ package service
 import (
 	"MedApp/internal/model"
 	repository "MedApp/internal/repository"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type Authorization interface {
@@ -26,11 +27,18 @@ type Booking interface {
 	BookSession(booking model.BookingModel) error
 }
 
+type Content interface {
+	GetCatFacts() ([]bson.M, error)
+	SaveCatFacts() error
+	GetCatFact(id string) (*model.CatFact, error)
+}
+
 type Service struct {
 	Authorization
 	Profile
 	Doctor
 	Booking
+	Content
 }
 
 func NewService(repo *repository.Repository) *Service {
@@ -39,5 +47,6 @@ func NewService(repo *repository.Repository) *Service {
 		Profile:       NewProfileService(repo),
 		Doctor:        NewDoctorService(*repo),
 		Booking:       NewBookingService(repo),
+		Content:       NewContent(*repo),
 	}
 }

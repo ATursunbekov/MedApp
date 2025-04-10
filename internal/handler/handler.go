@@ -17,11 +17,8 @@ func (h *Handler) InitRouter() *gin.Engine {
 	router := gin.New()
 
 	// test endpoint
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"result": "SUCCESS",
-		})
-	})
+	router.GET("/getCatFacts", h.getCatFacts)
+	router.GET("/getCatFact/:id", h.getCatFact)
 
 	// Auth group
 	auth := router.Group("/auth")
@@ -58,15 +55,8 @@ func (h *Handler) InitRouter() *gin.Engine {
 		content.GET("/getDoctors", h.getAllDoctors)
 		content.GET("/getSchedule", h.getFreeTimeSlots)
 	}
+	// For saving facts in db
+	//h.service.SaveCatFacts()
 
 	return router
-}
-
-func (h *Handler) login(c *gin.Context) {
-	userID := c.GetString(savedID)
-	isClient := c.GetBool(status)
-	c.JSON(200, gin.H{
-		"ID":     userID,
-		"status": isClient,
-	})
 }
