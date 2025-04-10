@@ -2,6 +2,7 @@ package repository
 
 import (
 	"MedApp/internal/model"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -27,11 +28,18 @@ type Booking interface {
 	BookClientToDoctor(session model.BookingModel) error
 }
 
+type Content interface {
+	SaveCatFact(fact bson.M) error
+	GetAllCatFacts() ([]bson.M, error)
+	GetCatFact(id string) (*model.CatFact, error)
+}
+
 type Repository struct {
 	Authorization
 	Profile
 	Doctor
 	Booking
+	Content
 }
 
 func NewRepository(db *mongo.Database) *Repository {
@@ -40,5 +48,6 @@ func NewRepository(db *mongo.Database) *Repository {
 		Profile:       NewProfileRepository(db),
 		Doctor:        NewDoctorRepository(db),
 		Booking:       NewBookingRepository(db),
+		Content:       NewContent(db),
 	}
 }
