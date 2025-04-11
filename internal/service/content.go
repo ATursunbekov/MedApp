@@ -3,6 +3,8 @@ package service
 import (
 	"MedApp/internal/model"
 	"MedApp/internal/repository"
+	redisdb "MedApp/pkg/redis"
+	"context"
 	"encoding/json"
 	"go.mongodb.org/mongo-driver/bson"
 	"net/http"
@@ -45,5 +47,22 @@ func (h *ContentService) SaveCatFacts() error {
 }
 
 func (h *ContentService) GetCatFact(id string) (*model.CatFact, error) {
-	return h.repo.GetCatFact(id)
+	cacheKey := "cat_fact:" + id
+
+	cached, err := redisdb.Client.Get(context.Background(), cacheKey).Result()
+	if err == nil {
+		var fact model.CatFact
+		if err := json.Unmarshal([]byte(cached), &fact); err == nil {
+			return &fact, nil
+		}
+	}
+
+	catDB, err := h.repo.GetCatFact(id)
+	if err != nil {
+		return nil, err
+	}
+
+	bytes, _ := json.Marshal(catDB)
+	redisdb.Client.Set(context.Background(), cacheKey, bytes, 10*time.Minute)
+	return catDB, nil
 }

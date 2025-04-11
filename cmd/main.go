@@ -4,8 +4,9 @@ import (
 	"MedApp/config"
 	"MedApp/internal/handler"
 	repository "MedApp/internal/repository"
-	server2 "MedApp/internal/server"
 	service2 "MedApp/internal/service"
+	"MedApp/pkg/redis"
+	server2 "MedApp/pkg/server"
 	"github.com/sirupsen/logrus"
 	"os"
 	"time"
@@ -23,6 +24,9 @@ func main() {
 		DBName:  os.Getenv("MONGO_DB_NAME"),
 		Timeout: 10 * time.Second,
 	})
+
+	//Connecting to Redis
+	redis.InitRedis()
 
 	if err != nil {
 		logrus.Error("Failed to connect to Mongo: %s", err)
