@@ -1,21 +1,4 @@
-#version: '3.8'
-#
-#services:
-#  mongo:
-#    image: mongo
-#    container_name: mongo-med
-#    restart: always
-#    ports:
-#      - "27017:27017"
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: admin
-#      MONGO_INITDB_ROOT_PASSWORD: secret
-#    volumes:
-#      - mongo-data:/data/db
-#volumes:
-#  mongo-data:
-
-version: '3.8'
+version: '3.9'
 
 services:
   mongo:
@@ -30,5 +13,30 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  redis:
+    image: redis:7
+    container_name: redis-med
+    restart: always
+    ports:
+      - "${REDIS_ADDR}"
+
 volumes:
   mongo-data:
+
+#version: '3.9'
+#
+#services:
+#  mongo:
+#    image: mongo
+#    container_name: mongo-med
+#    restart: always
+#    ports:
+#      - "${MONGO_PORT}"
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+#      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+#    volumes:
+#      - mongo-data:/data/db
+#
+#volumes:
+#  mongo-data:

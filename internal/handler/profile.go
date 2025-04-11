@@ -7,13 +7,16 @@ import (
 )
 
 func (h *Handler) getClientProfile(c *gin.Context) {
-	userID := c.GetString(savedID)
-	isClient := c.GetBool(status)
+	var body map[string]interface{}
 
-	if !isClient {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Wrong user status! (Client/Doctor)",
-		})
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON body"})
+		return
+	}
+
+	userID, ok := body["id"].(string)
+	if !ok || userID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing or invalid 'id'"})
 		return
 	}
 
@@ -26,19 +29,20 @@ func (h *Handler) getClientProfile(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"client": client,
-	})
+	c.JSON(http.StatusOK, client)
 }
 
 func (h *Handler) getDoctorProfile(c *gin.Context) {
-	userID := c.GetString(savedID)
-	isClient := c.GetBool(status)
+	var body map[string]interface{}
 
-	if isClient {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Wrong user status! (Client/Doctor)",
-		})
+	if err := c.ShouldBindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON body"})
+		return
+	}
+
+	userID, ok := body["id"].(string)
+	if !ok || userID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing or invalid 'id'"})
 		return
 	}
 
@@ -52,7 +56,5 @@ func (h *Handler) getDoctorProfile(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"doctor": doctor,
-	})
+	c.JSON(http.StatusOK, doctor)
 }
