@@ -12,6 +12,20 @@ import (
 	"time"
 )
 
+// @title           MedApp API
+// @version         1.0
+// @description     Backend logic for MedApp, main feature is booking to doctor sessions
+
+// @contact.name   Alikhan Tursunbekov
+// @contact.email  alikhan.tursunbekov@gmail.com
+
+// @host      localhost:8080
+// @BasePath  /
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+
 func main() {
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 

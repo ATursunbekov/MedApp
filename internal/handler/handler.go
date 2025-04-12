@@ -1,8 +1,11 @@
 package handler
 
 import (
+	_ "MedApp/docs"
 	"MedApp/internal/service"
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 )
 
 type Handler struct {
@@ -15,6 +18,8 @@ func NewHandler(service *service.Service) *Handler {
 
 func (h *Handler) InitRouter() *gin.Engine {
 	router := gin.New()
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// test endpoint
 	router.GET("/getCatFacts", h.getCatFacts)
@@ -42,18 +47,18 @@ func (h *Handler) InitRouter() *gin.Engine {
 
 		client := content.Group("/client")
 		{
-			client.GET("/profile", h.getClientProfile)
+			client.POST("/profile", h.getClientProfile)
 			client.POST("/book", h.bookTimeSlot)
 		}
 
 		doctor := content.Group("/doctor")
 		{
-			doctor.GET("profile", h.getDoctorProfile)
+			doctor.POST("profile", h.getDoctorProfile)
 		}
 
 		//TODO: General apis
 		content.GET("/getDoctors", h.getAllDoctors)
-		content.GET("/getSchedule", h.getFreeTimeSlots)
+		content.POST("/getSchedule", h.getFreeTimeSlots)
 	}
 	// For saving facts in db
 	//h.service.SaveCatFacts()

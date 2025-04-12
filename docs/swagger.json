@@ -1,0 +1,790 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Backend logic for MedApp, main feature is booking to doctor sessions",
+        "title": "MedApp API",
+        "contact": {
+            "name": "Alikhan Tursunbekov",
+            "email": "alikhan.tursunbekov@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/auth/client/login": {
+            "post": {
+                "description": "Authenticates a client and returns a JWT token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AuthClient"
+                ],
+                "summary": "Login Client",
+                "parameters": [
+                    {
+                        "description": "Client login credentials",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ClientInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "token response",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error response",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/client/register": {
+            "post": {
+                "description": "Registers a new client and returns an access token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AuthClient"
+                ],
+                "summary": "Register Client",
+                "parameters": [
+                    {
+                        "description": "Client registration details",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Client"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "access token",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/doctor/login": {
+            "post": {
+                "description": "Authenticates a doctor and returns a JWT token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AuthDoctor"
+                ],
+                "summary": "Login Doctor",
+                "parameters": [
+                    {
+                        "description": "Doctor login credentials",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DoctorInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "token response",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "error response",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/doctor/register": {
+            "post": {
+                "description": "Registers a new doctor and returns an access token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AuthDoctor"
+                ],
+                "summary": "Register Doctor",
+                "parameters": [
+                    {
+                        "description": "Doctor registration details",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Doctor"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "access token",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/catfacts/{id}": {
+            "get": {
+                "description": "Returns a cat fact by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ContentCheck"
+                ],
+                "summary": "Get Single Cat Fact",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Cat Fact ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CatFact"
+                        }
+                    },
+                    "400": {
+                        "description": "Missing ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/content/check": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Returns saved user ID and client status from context (set by middleware)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ContentCheck"
+                ],
+                "summary": "Check api workflow",
+                "responses": {
+                    "200": {
+                        "description": "user ID and status",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/content/client/book": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Books a session with a doctor (Client only access)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ContentActions"
+                ],
+                "summary": "Book a Session",
+                "parameters": [
+                    {
+                        "description": "Doctor ID, date, and time",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.BookingInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Booking success message",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Wrong user or bad input",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Couldn't book session",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/content/client/profile": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Returns profile information of a client by their ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get Client Profile",
+                "parameters": [
+                    {
+                        "description": "JSON with client ID",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Client"
+                        }
+                    },
+                    "400": {
+                        "description": "Missing or invalid ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/content/doctor/profile": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Returns profile information of a doctor by their ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get Doctor Profile",
+                "parameters": [
+                    {
+                        "description": "JSON with doctor ID",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Doctor"
+                        }
+                    },
+                    "400": {
+                        "description": "Missing or invalid ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/content/getDoctors": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Returns a list of all registered doctors",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ContentActions"
+                ],
+                "summary": "Get All Doctors",
+                "responses": {
+                    "200": {
+                        "description": "List of doctors or nil",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/content/getSchedule": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Returns free and occupied time slots for a doctor on a given day",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ContentActions"
+                ],
+                "summary": "Get Free Time Slots",
+                "parameters": [
+                    {
+                        "description": "Doctor ID and date",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DoctorSchedule"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Available and occupied slots",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getCatFacts": {
+            "get": {
+                "description": "Returns a list of cat facts from the database or service",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ContentCheck"
+                ],
+                "summary": "Get All Cat Facts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.CatFact"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.BookingInput": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "example": "12-04-2025"
+                },
+                "doctor_id": {
+                    "type": "string",
+                    "example": "643ebec937a2d9b4b2645f3d"
+                },
+                "time": {
+                    "type": "string",
+                    "example": "15:30"
+                }
+            }
+        },
+        "model.CatFact": {
+            "type": "object",
+            "properties": {
+                "fact": {
+                    "type": "string",
+                    "example": "Cats can rotate their ears 180 degrees."
+                },
+                "id": {
+                    "type": "string",
+                    "example": "64b1cddaf42a0b75a63f83a9"
+                },
+                "length": {
+                    "type": "integer",
+                    "example": 47
+                }
+            }
+        },
+        "model.Client": {
+            "type": "object",
+            "required": [
+                "age",
+                "email",
+                "name",
+                "password",
+                "phone",
+                "sex"
+            ],
+            "properties": {
+                "age": {
+                    "type": "integer",
+                    "example": 22
+                },
+                "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "strongPassword123"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+996700000000"
+                },
+                "sex": {
+                    "type": "string",
+                    "example": "male"
+                }
+            }
+        },
+        "model.ClientInput": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "securePass123"
+                }
+            }
+        },
+        "model.Doctor": {
+            "type": "object",
+            "required": [
+                "age",
+                "email",
+                "name",
+                "password",
+                "phone",
+                "sex",
+                "speciality"
+            ],
+            "properties": {
+                "age": {
+                    "type": "integer",
+                    "example": 22
+                },
+                "email": {
+                    "type": "string",
+                    "example": "some@gmail.com"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "*****"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+99655742351"
+                },
+                "sex": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "speciality": {
+                    "type": "string",
+                    "example": "Okulist"
+                },
+                "weekSchedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.WeekScheduleModel"
+                    }
+                }
+            }
+        },
+        "model.DoctorInput": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "securePass123"
+                }
+            }
+        },
+        "model.DoctorSchedule": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "description": "date format: (00-00-00)",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.WeekScheduleModel": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "slots": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

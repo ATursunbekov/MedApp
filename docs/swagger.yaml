@@ -1,0 +1,523 @@
+basePath: /
+definitions:
+  model.BookingInput:
+    properties:
+      date:
+        example: 12-04-2025
+        type: string
+      doctor_id:
+        example: 643ebec937a2d9b4b2645f3d
+        type: string
+      time:
+        example: "15:30"
+        type: string
+    type: object
+  model.CatFact:
+    properties:
+      fact:
+        example: Cats can rotate their ears 180 degrees.
+        type: string
+      id:
+        example: 64b1cddaf42a0b75a63f83a9
+        type: string
+      length:
+        example: 47
+        type: integer
+    type: object
+  model.Client:
+    properties:
+      age:
+        example: 22
+        type: integer
+      email:
+        example: user@example.com
+        type: string
+      id:
+        type: string
+      name:
+        example: John Doe
+        type: string
+      password:
+        example: strongPassword123
+        type: string
+      phone:
+        example: "+996700000000"
+        type: string
+      sex:
+        example: male
+        type: string
+    required:
+    - age
+    - email
+    - name
+    - password
+    - phone
+    - sex
+    type: object
+  model.ClientInput:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      password:
+        example: securePass123
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  model.Doctor:
+    properties:
+      age:
+        example: 22
+        type: integer
+      email:
+        example: some@gmail.com
+        type: string
+      id:
+        type: string
+      name:
+        example: John Doe
+        type: string
+      password:
+        example: '*****'
+        type: string
+      phone:
+        example: "+99655742351"
+        type: string
+      sex:
+        example: male
+        type: string
+      speciality:
+        example: Okulist
+        type: string
+      weekSchedule:
+        items:
+          $ref: '#/definitions/model.WeekScheduleModel'
+        type: array
+    required:
+    - age
+    - email
+    - name
+    - password
+    - phone
+    - sex
+    - speciality
+    type: object
+  model.DoctorInput:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      password:
+        example: securePass123
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  model.DoctorSchedule:
+    properties:
+      date:
+        description: 'date format: (00-00-00)'
+        type: string
+      id:
+        type: string
+    type: object
+  model.WeekScheduleModel:
+    properties:
+      date:
+        type: string
+      slots:
+        items:
+          type: string
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: alikhan.tursunbekov@gmail.com
+    name: Alikhan Tursunbekov
+  description: Backend logic for MedApp, main feature is booking to doctor sessions
+  title: MedApp API
+  version: "1.0"
+paths:
+  /auth/client/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates a client and returns a JWT token
+      parameters:
+      - description: Client login credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.ClientInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token response
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: error response
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login Client
+      tags:
+      - AuthClient
+  /auth/client/register:
+    post:
+      consumes:
+      - application/json
+      description: Registers a new client and returns an access token
+      parameters:
+      - description: Client registration details
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.Client'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: access token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register Client
+      tags:
+      - AuthClient
+  /auth/doctor/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates a doctor and returns a JWT token
+      parameters:
+      - description: Doctor login credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.DoctorInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token response
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: error response
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login Doctor
+      tags:
+      - AuthDoctor
+  /auth/doctor/register:
+    post:
+      consumes:
+      - application/json
+      description: Registers a new doctor and returns an access token
+      parameters:
+      - description: Doctor registration details
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.Doctor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: access token
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register Doctor
+      tags:
+      - AuthDoctor
+  /catfacts/{id}:
+    get:
+      description: Returns a cat fact by its ID
+      parameters:
+      - description: Cat Fact ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CatFact'
+        "400":
+          description: Missing ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get Single Cat Fact
+      tags:
+      - ContentCheck
+  /content/check:
+    get:
+      description: Returns saved user ID and client status from context (set by middleware)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: user ID and status
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Check api workflow
+      tags:
+      - ContentCheck
+  /content/client/book:
+    post:
+      consumes:
+      - application/json
+      description: Books a session with a doctor (Client only access)
+      parameters:
+      - description: Doctor ID, date, and time
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.BookingInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Booking success message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Wrong user or bad input
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Couldn't book session
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Book a Session
+      tags:
+      - ContentActions
+  /content/client/profile:
+    post:
+      consumes:
+      - application/json
+      description: Returns profile information of a client by their ID
+      parameters:
+      - description: JSON with client ID
+        in: body
+        name: input
+        required: true
+        schema:
+          additionalProperties:
+            type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Client'
+        "400":
+          description: Missing or invalid ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get Client Profile
+      tags:
+      - Profile
+  /content/doctor/profile:
+    post:
+      consumes:
+      - application/json
+      description: Returns profile information of a doctor by their ID
+      parameters:
+      - description: JSON with doctor ID
+        in: body
+        name: input
+        required: true
+        schema:
+          additionalProperties:
+            type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Doctor'
+        "400":
+          description: Missing or invalid ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get Doctor Profile
+      tags:
+      - Profile
+  /content/getDoctors:
+    get:
+      description: Returns a list of all registered doctors
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of doctors or nil
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Doctors
+      tags:
+      - ContentActions
+  /content/getSchedule:
+    post:
+      consumes:
+      - application/json
+      description: Returns free and occupied time slots for a doctor on a given day
+      parameters:
+      - description: Doctor ID and date
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.DoctorSchedule'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Available and occupied slots
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get Free Time Slots
+      tags:
+      - ContentActions
+  /getCatFacts:
+    get:
+      description: Returns a list of cat facts from the database or service
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.CatFact'
+            type: array
+        "500":
+          description: Internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get All Cat Facts
+      tags:
+      - ContentCheck
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
