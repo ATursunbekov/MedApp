@@ -6,6 +6,17 @@ import (
 	"net/http"
 )
 
+// @Summary      Get Client Profile
+// @Description  Returns profile information of a client by their ID
+// @Tags         Profile
+// @Accept       json
+// @Produce      json
+// @Param        input  body      map[string]string  true  "JSON with client ID"
+// @Success      200    {object}  model.Client
+// @Failure      400    {object}  map[string]string  "Missing or invalid ID"
+// @Failure      500    {object}  map[string]string  "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /content/client/profile [post]
 func (h *Handler) getClientProfile(c *gin.Context) {
 	var body map[string]interface{}
 
@@ -32,6 +43,17 @@ func (h *Handler) getClientProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, client)
 }
 
+// @Summary      Get Doctor Profile
+// @Description  Returns profile information of a doctor by their ID
+// @Tags         Profile
+// @Accept       json
+// @Produce      json
+// @Param        input  body      map[string]string  true  "JSON with doctor ID"
+// @Success      200    {object}  model.Doctor
+// @Failure      400    {object}  map[string]string  "Missing or invalid ID"
+// @Failure      500    {object}  map[string]string  "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /content/doctor/profile [post]
 func (h *Handler) getDoctorProfile(c *gin.Context) {
 	var body map[string]interface{}
 
