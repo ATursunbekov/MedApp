@@ -50,3 +50,11 @@ func NewService(repo *repository.Repository) *Service {
 		Content:       NewContent(*repo),
 	}
 }
+
+type AllServices interface {
+	Authorization
+	Profile
+	Doctor
+	Booking
+	Content
+}

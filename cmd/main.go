@@ -43,7 +43,7 @@ func main() {
 	redis.InitRedis()
 
 	if err != nil {
-		logrus.Error("Failed to connect to Mongo: %s", err)
+		logrus.Errorf("Failed to connect to Mongo: %s", err)
 	} else {
 		logrus.Info("Connected to Mongo Sucex")
 	}
@@ -62,6 +62,6 @@ func main() {
 
 	server := new(server2.Server)
 	if err := server.Run(":8080", router.InitRouter()); err != nil {
-		logrus.Error("Failed to start server: %s", err.Error())
+		logrus.Errorf("Failed to start server: %s", err.Error())
 	}
 }
