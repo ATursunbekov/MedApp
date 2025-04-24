@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"MedApp/internal/model"
+	"github.com/ATursunbekov/MedApp/internal/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )

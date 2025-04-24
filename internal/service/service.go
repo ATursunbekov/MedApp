@@ -1,8 +1,8 @@
 package service
 
 import (
-	"MedApp/internal/model"
-	repository "MedApp/internal/repository"
+	"github.com/ATursunbekov/MedApp/internal/model"
+	repository "github.com/ATursunbekov/MedApp/internal/repository"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

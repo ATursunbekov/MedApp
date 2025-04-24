@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"MedApp/internal/service"
+	"github.com/ATursunbekov/MedApp/internal/service"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"net/http"

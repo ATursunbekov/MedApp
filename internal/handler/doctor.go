@@ -1,10 +1,14 @@
 package handler
 
 import (
-	"MedApp/internal/model"
+	"context"
+	"github.com/ATursunbekov/MedApp/internal/grpc"
+	"github.com/ATursunbekov/MedApp/internal/model"
+	pb "github.com/ATursunbekov/MedApp/proto"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"net/http"
+	"time"
 )
 
 // @Summary      Get All Doctors
@@ -119,4 +123,57 @@ func (h *Handler) bookTimeSlot(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"result": "success!",
 	})
+}
+
+// @Summary      Save Anamnesis Session (only for Doctors)
+// @Description  Saves a health session (anamnesis) for a client by calling the gRPC Anamnesis service
+// @Tags         ContentActions
+// @Accept       json
+// @Produce      json
+// @Param        input  body      model.AnamnesisModel  true  "Anamnesis input data"
+// @Success      200    {object}  map[string]string      "Session saved successfully"
+// @Failure      400    {object}  map[string]string      "Bad request"
+// @Failure      500    {object}  map[string]string      "Couldn't save session"
+// @Security     ApiKeyAuth
+// @Router       /content/saveAnamnesis [post]
+
+func (h *Handler) saveAnamnesis(c *gin.Context) {
+	client, err := grpc.NewAnamnesisClient("localhost:50052")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Couldn't connect to Anamnesis service",
+		})
+		return
+	}
+
+	var input model.AnamnesisModel
+
+	if err = c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Bad Request",
+		})
+		return
+	}
+
+	now := time.Now()
+	formatted := now.Format("2006-01-02")
+	req := &pb.SaveSessionRequest{
+		UserId:    input.UserID,
+		Timestamp: formatted,
+		Notes:     input.Notes,
+	}
+
+	resp, err := client.SaveSession(context.Background(), req)
+	if err != nil {
+		logrus.Errorf("Save session error: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Couldn't save session",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": resp.Status,
+	})
+
 }

@@ -1,8 +1,8 @@
 package handler
 
 import (
-	_ "MedApp/docs"
-	"MedApp/internal/service"
+	_ "github.com/ATursunbekov/MedApp/docs"
+	"github.com/ATursunbekov/MedApp/internal/service"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
@@ -54,6 +54,7 @@ func (h *Handler) InitRouter() *gin.Engine {
 		doctor := content.Group("/doctor")
 		{
 			doctor.POST("profile", h.getDoctorProfile)
+			doctor.POST("saveAnamnesis", h.saveAnamnesis)
 		}
 
 		//TODO: General apis

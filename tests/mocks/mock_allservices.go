@@ -5,7 +5,7 @@
 package mocks
 
 import (
-	model "MedApp/internal/model"
+	model "github.com/ATursunbekov/MedApp/internal/model"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
