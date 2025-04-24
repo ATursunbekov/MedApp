@@ -135,8 +135,7 @@ func (h *Handler) bookTimeSlot(c *gin.Context) {
 // @Failure      400    {object}  map[string]string      "Bad request"
 // @Failure      500    {object}  map[string]string      "Couldn't save session"
 // @Security     ApiKeyAuth
-// @Router       /content/saveAnamnesis [post]
-
+// @Router       /content/doctor/saveAnamnesis [post]
 func (h *Handler) saveAnamnesis(c *gin.Context) {
 	client, err := grpc.NewAnamnesisClient("localhost:50052")
 	if err != nil {

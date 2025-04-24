@@ -473,6 +473,66 @@ const docTemplate = `{
                 }
             }
         },
+        "/content/doctor/saveAnamnesis": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Saves a health session (anamnesis) for a client by calling the gRPC Anamnesis service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ContentActions"
+                ],
+                "summary": "Save Anamnesis Session (only for Doctors)",
+                "parameters": [
+                    {
+                        "description": "Anamnesis input data",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.AnamnesisModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Session saved successfully",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Couldn't save session",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/content/getDoctors": {
             "get": {
                 "security": [
@@ -600,6 +660,19 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "model.AnamnesisModel": {
+            "type": "object",
+            "properties": {
+                "notes": {
+                    "type": "string",
+                    "example": "Zdorov kaka bik"
+                },
+                "user_id": {
+                    "type": "string",
+                    "example": "1"
+                }
+            }
+        },
         "model.BookingInput": {
             "type": "object",
             "properties": {

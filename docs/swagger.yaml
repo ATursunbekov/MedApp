@@ -1,5 +1,14 @@
 basePath: /
 definitions:
+  model.AnamnesisModel:
+    properties:
+      notes:
+        example: Zdorov kaka bik
+        type: string
+      user_id:
+        example: "1"
+        type: string
+    type: object
   model.BookingInput:
     properties:
       date:
@@ -435,6 +444,45 @@ paths:
       summary: Get Doctor Profile
       tags:
       - Profile
+  /content/doctor/saveAnamnesis:
+    post:
+      consumes:
+      - application/json
+      description: Saves a health session (anamnesis) for a client by calling the
+        gRPC Anamnesis service
+      parameters:
+      - description: Anamnesis input data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.AnamnesisModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Session saved successfully
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Couldn't save session
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Save Anamnesis Session (only for Doctors)
+      tags:
+      - ContentActions
   /content/getDoctors:
     get:
       description: Returns a list of all registered doctors
