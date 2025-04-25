@@ -12,12 +12,15 @@ import (
 
 type AnamnesisServer struct {
 	pb.UnimplementedSessionServiceServer
-	repo repository.AnamnesisRepository
+	repo    *repository.AnamnesisRepository
+	service *service2.AnamnesisServer
 }
 
 func NewAnamnesisServer(db *mongo.Database) AnamnesisServer {
+	temp := repository.NewAnamnesisRepository(db)
 	return AnamnesisServer{
-		repo: *repository.NewAnamnesisRepository(db),
+		repo:    temp,
+		service: service2.NewAnamnesisServer(*temp),
 	}
 }
 
@@ -28,8 +31,7 @@ func (s *AnamnesisServer) SaveSession(ctx context.Context, req *pb.SaveSessionRe
 		Notes:  req.Notes,
 	}
 
-	service := service2.NewAnamnesisServer(s.repo)
-	res, err := service.SaveSession(input)
+	res, err := s.service.SaveSession(input)
 	if err != nil {
 		logrus.Errorf("Error saving session: %v", err)
 		return nil, err
