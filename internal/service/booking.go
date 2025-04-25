@@ -1,8 +1,8 @@
 package service
 
 import (
-	"MedApp/internal/model"
-	"MedApp/internal/repository"
+	"github.com/ATursunbekov/MedApp/internal/model"
+	"github.com/ATursunbekov/MedApp/internal/repository"
 )
 
 type BookingService struct {

@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"MedApp/internal/model"
 	"context"
 	"fmt"
+	"github.com/ATursunbekov/MedApp/internal/model"
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"

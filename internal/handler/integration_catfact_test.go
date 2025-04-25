@@ -1,12 +1,12 @@
 package handler
 
 import (
-	"MedApp/internal/model"
-	"MedApp/internal/repository"
-	"MedApp/internal/service"
-	"MedApp/pkg/redis"
 	"context"
 	"encoding/json"
+	"github.com/ATursunbekov/MedApp/internal/model"
+	"github.com/ATursunbekov/MedApp/internal/repository"
+	"github.com/ATursunbekov/MedApp/internal/service"
+	"github.com/ATursunbekov/MedApp/pkg/redis"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"

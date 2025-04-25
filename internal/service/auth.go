@@ -1,12 +1,12 @@
 package service
 
 import (
-	"MedApp/internal/model"
-	repository "MedApp/internal/repository"
 	"crypto/sha1"
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/ATursunbekov/MedApp/internal/model"
+	repository "github.com/ATursunbekov/MedApp/internal/repository"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/sirupsen/logrus"
 	"os"

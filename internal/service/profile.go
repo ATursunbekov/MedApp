@@ -1,11 +1,11 @@
 package service
 
 import (
-	"MedApp/internal/model"
-	"MedApp/internal/repository"
-	redisdb "MedApp/pkg/redis"
 	"context"
 	"encoding/json"
+	"github.com/ATursunbekov/MedApp/internal/model"
+	"github.com/ATursunbekov/MedApp/internal/repository"
+	redisdb "github.com/ATursunbekov/MedApp/pkg/redis"
 	"time"
 )
 

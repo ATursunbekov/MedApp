@@ -1,16 +1,18 @@
 package main
 
 import (
-	"MedApp/config"
-	"MedApp/internal/handler"
-	repository "MedApp/internal/repository"
-	service2 "MedApp/internal/service"
-	"MedApp/pkg/redis"
-	server2 "MedApp/pkg/server"
+	"github.com/ATursunbekov/MedApp/config"
+	"github.com/ATursunbekov/MedApp/internal/handler"
+	repository "github.com/ATursunbekov/MedApp/internal/repository"
+	service2 "github.com/ATursunbekov/MedApp/internal/service"
+	"github.com/ATursunbekov/MedApp/pkg/redis"
+	server2 "github.com/ATursunbekov/MedApp/pkg/server"
 	"github.com/sirupsen/logrus"
 	"os"
 	"time"
 )
+
+//swagger link: localhost:8080/swagger/index.html#
 
 // @title           MedApp API
 // @version         1.0

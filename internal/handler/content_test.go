@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"MedApp/internal/service"
-	"MedApp/tests/mocks"
 	"errors"
+	"github.com/ATursunbekov/MedApp/internal/service"
+	"github.com/ATursunbekov/MedApp/tests/mocks"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"

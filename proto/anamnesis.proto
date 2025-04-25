@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package session;
+
+option go_package = "github.com/ATursunbekov/MedApp/proto/anamnesis";
+
+message SaveSessionRequest {
+  string user_id = 1;
+  string timestamp = 2;
+  string notes = 3;
+}
+
+message SaveSessionResponse {
+  string status = 1;
+}
+
+service SessionService {
+  rpc SaveSession(SaveSessionRequest) returns (SaveSessionResponse);
+}
