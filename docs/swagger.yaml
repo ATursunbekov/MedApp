@@ -124,6 +124,17 @@ definitions:
       id:
         type: string
     type: object
+  model.Medicine:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      quantity:
+        type: integer
+    type: object
   model.WeekScheduleModel:
     properties:
       date:
@@ -515,6 +526,132 @@ paths:
       summary: Get All Cat Facts
       tags:
       - ContentCheck
+  /medicine:
+    get:
+      description: Retrieves a list of all medicines
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Medicine'
+            type: array
+        "500":
+          description: 'error: Failed to get medicines'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all medicines
+      tags:
+      - Medicine
+    post:
+      consumes:
+      - application/json
+      description: Creates a new medicine entry in the database
+      parameters:
+      - description: Medicine data
+        in: body
+        name: medicine
+        required: true
+        schema:
+          $ref: '#/definitions/model.Medicine'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 'message: Medicine created successfully, id: medicine.ID'
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 'error: Invalid input'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 'error: Failed to create medicine'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new medicine
+      tags:
+      - Medicine
+  /medicine/{id}:
+    delete:
+      description: Deletes a medicine entry by its ID
+      parameters:
+      - description: Medicine ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: 'error: Invalid ID'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 'error: Medicine not found'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 'error: Failed to delete medicine'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete medicine by ID
+      tags:
+      - Medicine
+    get:
+      description: Retrieves a medicine entry by its ID
+      parameters:
+      - description: Medicine ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Medicine'
+        "400":
+          description: 'error: Invalid ID'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 'error: Medicine not found'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 'error: Failed to get medicine'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get medicine by ID
+      tags:
+      - Medicine
 securityDefinitions:
   ApiKeyAuth:
     in: header

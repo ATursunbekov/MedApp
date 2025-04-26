@@ -56,12 +56,19 @@ func (h *Handler) InitRouter() *gin.Engine {
 			doctor.POST("profile", h.getDoctorProfile)
 		}
 
-		//TODO: General apis
+		// Medicine endpoints
+		medicines := content.Group("/medicines")
+		{
+			medicines.POST("", h.createMedicine)
+			medicines.GET("", h.getAllMedicines)
+			medicines.GET("/:id", h.getMedicineByID)
+			medicines.DELETE("/:id", h.deleteMedicine)
+		}
+
+		// General apis
 		content.GET("/getDoctors", h.getAllDoctors)
 		content.POST("/getSchedule", h.getFreeTimeSlots)
 	}
-	// For saving facts in db
-	//h.service.SaveCatFacts()
 
 	return router
 }

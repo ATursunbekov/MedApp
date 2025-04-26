@@ -5,9 +5,10 @@
 package mocks
 
 import (
-	model "MedApp/internal/model"
-	reflect "reflect"
+	"context"
+	"reflect"
 
+	model "MedApp/internal/model"
 	gomock "github.com/golang/mock/gomock"
 	bson "go.mongodb.org/mongo-driver/bson"
 )
@@ -306,6 +307,87 @@ func (mr *MockContentMockRecorder) SaveCatFacts() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SaveCatFacts", reflect.TypeOf((*MockContent)(nil).SaveCatFacts))
 }
 
+// MockMedicine is a mock of Medicine interface.
+type MockMedicine struct {
+	ctrl     *gomock.Controller
+	recorder *MockMedicineMockRecorder
+}
+
+// MockMedicineMockRecorder is the mock recorder for MockMedicine.
+type MockMedicineMockRecorder struct {
+	mock *MockMedicine
+}
+
+// NewMockMedicine creates a new mock instance.
+func NewMockMedicine(ctrl *gomock.Controller) *MockMedicine {
+	mock := &MockMedicine{ctrl: ctrl}
+	mock.recorder = &MockMedicineMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockMedicine) EXPECT() *MockMedicineMockRecorder {
+	return m.recorder
+}
+
+// Create mocks base method.
+func (m *MockMedicine) Create(ctx context.Context, medicine *model.Medicine) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", ctx, medicine)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockMedicineMockRecorder) Create(ctx, medicine interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockMedicine)(nil).Create), ctx, medicine)
+}
+
+// GetByID mocks base method.
+func (m *MockMedicine) GetByID(ctx context.Context, id string) (*model.Medicine, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByID", ctx, id)
+	ret0, _ := ret[0].(*model.Medicine)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByID indicates an expected call of GetByID.
+func (mr *MockMedicineMockRecorder) GetByID(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByID", reflect.TypeOf((*MockMedicine)(nil).GetByID), ctx, id)
+}
+
+// GetAll mocks base method.
+func (m *MockMedicine) GetAll(ctx context.Context) ([]*model.Medicine, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAll", ctx)
+	ret0, _ := ret[0].([]*model.Medicine)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAll indicates an expected call of GetAll.
+func (mr *MockMedicineMockRecorder) GetAll(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockMedicine)(nil).GetAll), ctx)
+}
+
+// Delete mocks base method.
+func (m *MockMedicine) Delete(ctx context.Context, id string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delete", ctx, id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockMedicineMockRecorder) Delete(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockMedicine)(nil).Delete), ctx, id)
+}
+
 // MockAllServices is a mock of AllServices interface.
 type MockAllServices struct {
 	ctrl     *gomock.Controller
@@ -506,4 +588,62 @@ func (m *MockAllServices) SaveCatFacts() error {
 func (mr *MockAllServicesMockRecorder) SaveCatFacts() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SaveCatFacts", reflect.TypeOf((*MockAllServices)(nil).SaveCatFacts))
+}
+
+// Create mocks base method.
+func (m *MockAllServices) Create(ctx context.Context, medicine *model.Medicine) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", ctx, medicine)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Create indicates an expected call of Create.
+func (mr *MockAllServicesMockRecorder) Create(ctx, medicine interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockAllServices)(nil).Create), ctx, medicine)
+}
+
+// GetByID mocks base method.
+func (m *MockAllServices) GetByID(ctx context.Context, id string) (*model.Medicine, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetByID", ctx, id)
+	ret0, _ := ret[0].(*model.Medicine)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetByID indicates an expected call of GetByID.
+func (mr *MockAllServicesMockRecorder) GetByID(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetByID", reflect.TypeOf((*MockAllServices)(nil).GetByID), ctx, id)
+}
+
+// GetAll mocks base method.
+func (m *MockAllServices) GetAll(ctx context.Context) ([]*model.Medicine, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAll", ctx)
+	ret0, _ := ret[0].([]*model.Medicine)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAll indicates an expected call of GetAll.
+func (mr *MockAllServicesMockRecorder) GetAll(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockAllServices)(nil).GetAll), ctx)
+}
+
+// Delete mocks base method.
+func (m *MockAllServices) Delete(ctx context.Context, id string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delete", ctx, id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockAllServicesMockRecorder) Delete(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockAllServices)(nil).Delete), ctx, id)
 }

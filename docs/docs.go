@@ -597,6 +597,196 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/medicine": {
+            "get": {
+                "description": "Retrieves a list of all medicines",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Medicine"
+                ],
+                "summary": "Get all medicines",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Medicine"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error: Failed to get medicines",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new medicine entry in the database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Medicine"
+                ],
+                "summary": "Create a new medicine",
+                "parameters": [
+                    {
+                        "description": "Medicine data",
+                        "name": "medicine",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Medicine"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "message: Medicine created successfully, id: medicine.ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "error: Invalid input",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error: Failed to create medicine",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/medicine/{id}": {
+            "get": {
+                "description": "Retrieves a medicine entry by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Medicine"
+                ],
+                "summary": "Get medicine by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Medicine ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Medicine"
+                        }
+                    },
+                    "400": {
+                        "description": "error: Invalid ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "error: Medicine not found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error: Failed to get medicine",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes a medicine entry by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Medicine"
+                ],
+                "summary": "Delete medicine by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Medicine ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "error: Invalid ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "error: Medicine not found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error: Failed to delete medicine",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -768,6 +958,23 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "string"
+                }
+            }
+        },
+        "model.Medicine": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
                 }
             }
         },
