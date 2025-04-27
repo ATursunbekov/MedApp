@@ -14,8 +14,12 @@ func NewMedicineService(repo repository.Medicine) *MedicineService {
 	return &MedicineService{repo: repo}
 }
 
-func (s *MedicineService) Create(ctx context.Context, medicine *model.Medicine) error {
-	return s.repo.Create(ctx, medicine)
+func (s *MedicineService) Create(ctx context.Context, medicine *model.Medicine) (string, error) {
+	id, err := s.repo.Create(ctx, medicine)
+	if err != nil {
+		return "", err
+	}
+	return id, nil
 }
 
 func (s *MedicineService) GetByID(ctx context.Context, id string) (*model.Medicine, error) {

@@ -3,7 +3,9 @@ package repository
 import (
 	"MedApp/internal/model"
 	"context"
+	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -17,14 +19,22 @@ func NewMedicineRepository(db *mongo.Database) *MedicineRepository {
 	}
 }
 
-func (r *MedicineRepository) Create(ctx context.Context, medicine *model.Medicine) error {
-	_, err := r.collection.InsertOne(ctx, medicine)
-	return err
+func (r *MedicineRepository) Create(ctx context.Context, medicine *model.Medicine) (string, error) {
+	result, err := r.collection.InsertOne(ctx, medicine)
+	if err != nil {
+		return "", err
+	}
+	id := result.InsertedID.(primitive.ObjectID).Hex()
+	return id, nil
 }
 
 func (r *MedicineRepository) GetByID(ctx context.Context, id string) (*model.Medicine, error) {
 	var medicine model.Medicine
-	err := r.collection.FindOne(ctx, bson.M{"_id": id}).Decode(&medicine)
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, fmt.Errorf("invalid ID format: %v", err)
+	}
+	err = r.collection.FindOne(ctx, bson.M{"_id": objID}).Decode(&medicine)
 	if err != nil {
 		return nil, err
 	}
@@ -46,6 +56,16 @@ func (r *MedicineRepository) GetAll(ctx context.Context) ([]*model.Medicine, err
 }
 
 func (r *MedicineRepository) Delete(ctx context.Context, id string) error {
-	_, err := r.collection.DeleteOne(ctx, bson.M{"_id": id})
-	return err
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return fmt.Errorf("invalid ID format: %v", err)
+	}
+	result, err := r.collection.DeleteOne(ctx, bson.M{"_id": objID})
+	if err != nil {
+		return err
+	}
+	if result.DeletedCount == 0 {
+		return fmt.Errorf("medicine not found")
+	}
+	return nil
 }

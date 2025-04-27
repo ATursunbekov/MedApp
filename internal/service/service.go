@@ -35,7 +35,7 @@ type Content interface {
 }
 
 type Medicine interface {
-	Create(ctx context.Context, medicine *model.Medicine) error
+	Create(ctx context.Context, medicine *model.Medicine) (string, error)
 	GetByID(ctx context.Context, id string) (*model.Medicine, error)
 	GetAll(ctx context.Context) ([]*model.Medicine, error)
 	Delete(ctx context.Context, id string) error

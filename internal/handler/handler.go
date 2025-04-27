@@ -2,14 +2,36 @@ package handler
 
 import (
 	_ "MedApp/docs"
+	"MedApp/internal/model"
 	"MedApp/internal/service"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
+	"net/http"
 )
 
 type Handler struct {
 	service *service.Service
+}
+
+func (h *Handler) createMedicine(c *gin.Context) {
+	var input model.Medicine
+	if err := c.ShouldBindJSON(&input); err != nil {
+		logrus.Errorf("CreateMedicine: failed to bind JSON: %v", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	id, err := h.service.Create(c.Request.Context(), &input)
+	if err != nil {
+		logrus.Errorf("CreateMedicine: failed to create medicine: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{
+		"message": "Medicine created successfully",
+		"data":    gin.H{"id": id},
+	})
 }
 
 func NewHandler(service *service.Service) *Handler {

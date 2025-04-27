@@ -1,41 +1,13 @@
 package handler
 
 import (
-	"MedApp/internal/model"
+	"github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 )
-
-// createMedicine godoc
-// @Summary Create a new medicine
-// @Description Creates a new medicine entry in the database
-// @Tags Medicine
-// @Accept json
-// @Produce json
-// @Param medicine body model.Medicine true "Medicine data"
-// @Success 201 {object} map[string]interface{} "message: Medicine created successfully, id: medicine.ID"
-// @Failure 400 {object} map[string]string "error: Invalid input"
-// @Failure 500 {object} map[string]string "error: Failed to create medicine"
-// @Router /medicine [post]
-func (h *Handler) createMedicine(c *gin.Context) {
-	var medicine model.Medicine
-	if err := c.ShouldBindJSON(&medicine); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input: " + err.Error()})
-		return
-	}
-
-	if err := h.service.Medicine.Create(c.Request.Context(), &medicine); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create medicine: " + err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusCreated, gin.H{
-		"message": "Medicine created successfully",
-		"data":    gin.H{"id": medicine.ID},
-	})
-}
 
 // getMedicineByID godoc
 // @Summary Get medicine by ID
@@ -57,10 +29,11 @@ func (h *Handler) getMedicineByID(c *gin.Context) {
 
 	medicine, err := h.service.Medicine.GetByID(c.Request.Context(), id)
 	if err != nil {
-		if strings.Contains(strings.ToLower(err.Error()), "not found") {
+		if err == mongo.ErrNoDocuments {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Medicine not found"})
 			return
 		}
+		logrus.Errorf("GetMedicineByID: failed to get medicine with id %s: %v", id, err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get medicine: " + err.Error()})
 		return
 	}
