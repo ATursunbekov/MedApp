@@ -20,23 +20,29 @@ services:
     ports:
       - "${REDIS_ADDR}"
 
+  main-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.main
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+      - redis
+    env_file:
+      - .env
+
+  grpc-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.grpc
+    ports:
+      - "50051:50051"
+    depends_on:
+      - mongo
+      - redis
+    env_file:
+      - .env
+
 volumes:
   mongo-data:
-
-#version: '3.9'
-#
-#services:
-#  mongo:
-#    image: mongo
-#    container_name: mongo-med
-#    restart: always
-#    ports:
-#      - "${MONGO_PORT}"
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
-#      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
-#    volumes:
-#      - mongo-data:/data/db
-#
-#volumes:
-#  mongo-data:

@@ -1,0 +1,9 @@
+FROM golang:1.23
+
+WORKDIR /app
+COPY . .
+
+RUN go build -o grpc ./anamnesis/cmd/anamnesis.go
+
+EXPOSE 50051
+CMD ["./grpc"]
