@@ -29,6 +29,7 @@ services:
     depends_on:
       - mongo
       - redis
+    restart: always
     env_file:
       - .env
 
@@ -41,6 +42,7 @@ services:
     depends_on:
       - mongo
       - redis
+    restart: always
     env_file:
       - .env
 
